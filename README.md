@@ -1,4 +1,4 @@
 maze-solver
 ===========
 
-Input a maze, the AI solves it
+Input a maze, the AI solves it. FUN!!
