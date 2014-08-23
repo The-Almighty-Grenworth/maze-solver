@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Maze Solver v0.9</title>
+		<link rel="stylesheet" type="text/css" href="stylesheet.css">
+		<script src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v5.0.2.min.js"></script>
+		<script src="variables.js"></script>
+		<script src="viewfunctions.js"></script>
+		<script src="aifunctions.js"></script>
+	</head>
+	<body class="body">
+		<h2>Super Awesome Maze Solver v0.9</h2>
+		<hr>
+		<div id="container" class="canvas"></div>
+		<div class="othercontent">
+			<h3>Notes:</h3>
+			<hr>
+			<ul>
+				<li>The program will take a while, so be patient!</li>
+				<li>The maze solver does not find the most efficient path, this would take the program more than 24x longer!</li>
+				<li>press Ctrl+Shift+J in chrome to see console messages made by the program</li>
+				<li>This program is heavily reliant on HTML5's new canvas tag and the KineticJS framework</li>
+				<li>This program is compatible with all modern browsers as it only uses CSS, Javascript and HTML5</li>
+				<li><a href = "instructionspage.html">Click here for instructions on how to use the Maze Solver!</a></li>
+				<li><a href = "videopage.html">Click here for a video Demonstration!</a></li>
+			</ul>
+		</div>
+		
+		<script defer="defer">
+
+			makeCanvas("container");
+			makeGridarray();
+			makeButtons();
+			addButtonEvents();
+			addGridEvents();
+			addElementsToCanvas();
+
+		</script>
+	</body>
+</html>
