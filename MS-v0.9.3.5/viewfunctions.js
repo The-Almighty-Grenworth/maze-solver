@@ -90,16 +90,26 @@ function makeButtons() {
 		fill: '#E0EBEB',
 		stroke: 'black'
 	});
-	solveboxtext = new Kinetic.Text({
-		x: 70,
-		y: (gridL * (boxL + gap)) + 12 + startboxrect.height(),
-		text: 'Solve!',
+	
+	eraseboxtext = new Kinetic.Text({
+		x: endboxtext.width()+8+startboxtext.width()+8+pathboxtext.width()+8,
+		y: (gridL * (boxL+gap)) + 4,
+		text: 'Erase',
 		fontSize: 24,
 		fontFamily: 'Calibri',
 		fill: 'black'
 	});
-	clearboxtext = new Kinetic.Text({
+
+	eraseboxrect = new Kinetic.Rect({
 		x: endboxtext.width()+8+startboxtext.width()+8+pathboxtext.width()+8,
+		y: (gridL * (boxL+gap)) + 4,
+		width: eraseboxtext.width(),
+		height: eraseboxtext.height(),
+		fill: 'yellow', //
+		stroke: 'black'
+	});
+	clearboxtext = new Kinetic.Text({
+		x: endboxtext.width()+8+startboxtext.width()+8+pathboxtext.width()+8+eraseboxtext.width()+8,
 		y: (gridL * (boxL+gap)) + 4,
 		text: 'Clear',
 		fontSize: 24,
@@ -108,17 +118,27 @@ function makeButtons() {
 	});
 
 	clearboxrect = new Kinetic.Rect({
-		x: endboxtext.width()+8+startboxtext.width()+8+pathboxtext.width()+8,
+		x: endboxtext.width()+8+startboxtext.width()+8+pathboxtext.width()+8+eraseboxtext.width()+8,
 		y: (gridL * (boxL+gap)) + 4,
 		width: clearboxtext.width(),
 		height: clearboxtext.height(),
 		fill: 'silver', //
 		stroke: 'black'
 	});
+
+	solveboxtext = new Kinetic.Text({
+		x: 70,
+		y: (gridL * (boxL + gap)) + 12 + startboxrect.height(),
+		text: 'Solve!',
+		fontSize: 24,
+		fontFamily: 'Calibri',
+		fill: 'black'
+	});
+
 	solveboxrect = new Kinetic.Rect({
 		x: 0,
 		y: (gridL * (boxL + gap)) + 12 + startboxrect.height(),
-		width: startboxtext.width() + endboxtext.width() + pathboxtext.width() +clearboxtext.width()+ 24,
+		width: startboxtext.width() + endboxtext.width() + pathboxtext.width() +eraseboxtext.width()+ 24,
 		height: solveboxtext.height(),
 		fill: 'green',
 		stroke: 'black'
@@ -126,7 +146,7 @@ function makeButtons() {
 	solveboxrectOP =new Kinetic.Rect({
 		x: 0,
 		y: (gridL * (boxL + gap)) + 12 + startboxrect.height(),
-		width: startboxtext.width() + endboxtext.width() + pathboxtext.width() + clearboxtext.width() + 24,
+		width: startboxtext.width() + endboxtext.width() + pathboxtext.width() + eraseboxtext.width() + 24,
 		height: solveboxtext.height(),
 		fill: 'green',
 		stroke: 'black',
@@ -141,6 +161,8 @@ function addButtonEvents() {
 			startboxrect.setFill('gold');
 		}
 		else {
+			erasebutton = false;
+			eraseboxrect.setFill('yellow');
 			startbutton = true;
 			startboxrect.setFill('blue');
 			endboxrect.setFill('purple');
@@ -156,6 +178,8 @@ function addButtonEvents() {
 			endboxrect.setFill('purple');
 		}
 		else {
+			erasebutton = false;
+			eraseboxrect.setFill('yellow');
 			endbutton = true;
 			startboxrect.setFill('gold');
 			endboxrect.setFill('blue');
@@ -172,6 +196,8 @@ function addButtonEvents() {
 			pathboxrect.setFill('#E0EBEB');
 		}
 		else {
+			erasebutton = false;
+			eraseboxrect.setFill('yellow');
 			pathbutton = true;
 			startboxrect.setFill('gold');
 			endboxrect.setFill('purple');
@@ -180,6 +206,23 @@ function addButtonEvents() {
 			endbutton = false;
 		}
 		
+		layer1.draw();
+	});
+	eraseboxtext.on('click', function() {
+		if (erasebutton == true) {
+			erasebutton = false;
+			eraseboxrect.setFill('yellow');
+		}
+		else {
+			erasebutton = true;
+			startboxrect.setFill('gold');
+			endboxrect.setFill('purple');
+			pathboxrect.setFill('#E0EBEB');
+			eraseboxrect.setFill("blue");
+			pathbutton = false;
+			startbutton = false;
+			endbutton = false;
+		}
 		layer1.draw();
 	});
 	/*testboxrect.on('click', function () {
@@ -236,9 +279,13 @@ function addGridEvents() {
 					displayboxs[x][y][1].on('mouseover',function() {
 						if (click) {
 							if (pathbutton == true) {
-								displayboxs[x][y][0] = displayboxs[x][y][0] == 'X' ? 'P' : 'X';
-								var fill = displayboxs[x][y][0] == 'P' ? "#E0EBEB" : "black";
-								this.setFill(fill);
+								displayboxs[x][y][0] = 'P';
+								displayboxs[x][y][1].setFill("#E0EBEB");
+								layer1.draw();
+							}
+							else if (erasebutton == true) {
+								displayboxs[x][y][0] = 'X';
+								displayboxs[x][y][1].setFill("black");
 								layer1.draw();
 							}
 						}
@@ -246,29 +293,29 @@ function addGridEvents() {
 					displayboxs[x][y][1].on('mousedown', function() {
 						if (!click) {
 							if (pathbutton == true) {
-								displayboxs[x][y][0] = displayboxs[x][y][0] == 'X' ? 'P' : 'X';
-								var fill = displayboxs[x][y][0] == 'P' ? "#E0EBEB" : "black";
-								this.setFill(fill);
+								displayboxs[x][y][0] = 'P';
+								displayboxs[x][y][1].setFill("#E0EBEB");
+								layer1.draw();
+							}
+							else if (erasebutton == true) {
+								displayboxs[x][y][0] = 'X';
+								displayboxs[x][y][1].setFill("black");
 								layer1.draw();
 							}
 							else if (startbutton == true) {
-								displayboxs[x][y][0] = displayboxs[x][y][0] == 'X' ? 'S' : 'X';
-								var fill = displayboxs[x][y][0] == 'S' ? "gold" : "black";
-								this.setFill(fill);
+								displayboxs[x][y][0] = 'S';
+								displayboxs[x][y][1].setFill("gold");
 								startbutton = false;
 								startboxrect.setFill('gold');
-								pathbutton = true;
-								pathboxrect.setFill('blue');
 								layer1.draw();
 							}
 							else if (endbutton == true) {
-								displayboxs[x][y][0] = displayboxs[x][y][0] == 'X' ? 'E' : 'X';
-								var fill = displayboxs[x][y][0] == 'E' ? "purple" : "black";
-								this.setFill(fill);
+								displayboxs[x][y][0] = 'E';
+								displayboxs[x][y][1].setFill("purple");
 								endbutton = false;
 								endboxrect.setFill('purple');
 								layer1.draw();
-								var text = "";
+								//var text = ""; //what is this and why
 							}
 						}
 					});
@@ -290,6 +337,8 @@ function addElementsToCanvas() {
 	layer1.add(endboxtext);
 	layer1.add(pathboxrect);
 	layer1.add(pathboxtext);
+	layer1.add(eraseboxrect);
+	layer1.add(eraseboxtext);
 	layer1.add(clearboxrect);
 	layer1.add(clearboxtext);
 	layer1.add(solveboxrect);

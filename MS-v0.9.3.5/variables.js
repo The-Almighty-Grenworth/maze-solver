@@ -21,9 +21,11 @@ var startboxtext; var startboxrect;
 var endboxtext; var endboxrect;
 var pathboxtext; var pathboxrect;
 var solveboxtext; var solveboxrect; var solveboxrectOP;
+var eraseboxrect; var eraseboxtext;
 var clearboxrect; var clearboxtext;
 
 var startbutton = false;
 var endbutton = false;
 var pathbutton = false;
+var erasebutton = false;
 var click = false;
